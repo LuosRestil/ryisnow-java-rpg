@@ -59,24 +59,29 @@ public class Player extends Entity {
 
         if (keyHandler.upPressed) {
             direction = "up";
-            worldY -= speed;
         } else if (keyHandler.downPressed) {
             direction = "down";
-            worldY += speed;
         } else if (keyHandler.leftPressed) {
             direction = "left";
-            worldX -= speed;
         } else if (keyHandler.rightPressed) {
             direction = "right";
-            worldX += speed;
+        }
+
+        if (keyPressed) {
+            switch(direction) {
+                case "up": worldY -= speed; break;
+                case "down": worldY += speed; break;
+                case "left": worldX -= speed; break;
+                case "right": worldX += speed; break;
+            }
         }
 
         gamePanel.collisionChecker.resolveTileCollisions(this);
         int collidedObjectIndex = gamePanel.collisionChecker.checkObjects(this, true);
         if (collidedObjectIndex > -1)
             interactObject(collidedObjectIndex);
-        gamePanel.collisionChecker.checkObjects(this, true);
-
+        gamePanel.collisionChecker.checkEntities(this, gamePanel.npcs);
+        
         if (keyPressed) {
             spriteCounter++;
             if (spriteCounter > 10 && keyPressed) {

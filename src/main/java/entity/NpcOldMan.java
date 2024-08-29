@@ -1,5 +1,7 @@
 package main.java.entity;
 
+import java.util.Random;
+
 import main.java.GamePanel;
 
 public class NpcOldMan extends Entity {
@@ -24,4 +26,18 @@ public class NpcOldMan extends Entity {
         right2 = getImage("/npcs/oldman_right_2");
     }
 
+    @Override
+    public void setDirection() {
+        int randNum = new Random().nextInt(100);
+
+        if (randNum < 25) {
+            direction = "up";
+        } else if (randNum < 50) {
+            direction = "down";
+        } else if (randNum < 75) {
+            direction = "left";
+        } else {
+            direction = "right";
+        }
+    }
 }

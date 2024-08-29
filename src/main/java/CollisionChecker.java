@@ -1,6 +1,7 @@
 package main.java;
 
 import main.java.entity.Entity;
+import main.java.entity.Player;
 import main.java.object.SuperObject;
 
 public class CollisionChecker {
@@ -92,10 +93,10 @@ public class CollisionChecker {
                             break;
                         case "right":
                             if (obj.solid) {
-                                entity.worldX = obj.hitbox.x - entity.hitboxDefaultX - entity.hitbox.width; 
+                                entity.worldX = obj.hitbox.x - entity.hitboxDefaultX - entity.hitbox.width;
                             }
                             collisionObjectIndex = i;
-                        break;
+                            break;
                     }
                 }
 
@@ -109,5 +110,93 @@ public class CollisionChecker {
         entity.hitbox.x = entity.hitboxDefaultX;
         entity.hitbox.y = entity.hitboxDefaultY;
         return collisionObjectIndex;
+    }
+
+    // npc or monster collision
+    public int checkEntities(Entity entity, Entity[] others) {
+        // translate hitbox to world coordinates
+        entity.hitbox.x = entity.worldX + entity.hitbox.x;
+        entity.hitbox.y = entity.worldY + entity.hitbox.y;
+
+        int collisionOtherIndex = -1;
+
+        for (int i = 0; i < others.length; i++) {
+            Entity other = others[i];
+            if (other != null) {
+                // get other hitbox position
+                other.hitbox.x = other.worldX + other.hitbox.x;
+                other.hitbox.y = other.worldY + other.hitbox.y;
+                boolean collisionDetected = entity.hitbox.intersects(other.hitbox);
+
+                if (collisionDetected) {
+                    switch (entity.direction) {
+                        case "up":
+                            entity.worldY = other.hitbox.y + other.hitbox.height - entity.hitboxDefaultY;
+                            collisionOtherIndex = i;
+                            break;
+                        case "down":
+                            entity.worldY = other.worldY - entity.hitboxDefaultY - entity.hitbox.height;
+                            collisionOtherIndex = i;
+                            break;
+                        case "left":
+                            entity.worldX = other.hitbox.x + other.hitbox.width - entity.hitboxDefaultX;
+                            collisionOtherIndex = i;
+                            break;
+                        case "right":
+                            entity.worldX = other.hitbox.x - entity.hitboxDefaultX - entity.hitbox.width;
+                            collisionOtherIndex = i;
+                            break;
+                    }
+                }
+
+                // reset hitbox backt to relative to object
+                other.hitbox.x = other.hitboxDefaultX;
+                other.hitbox.y = other.hitboxDefaultY;
+            }
+        }
+
+        // reset hitbox back to relative to player
+        entity.hitbox.x = entity.hitboxDefaultX;
+        entity.hitbox.y = entity.hitboxDefaultY;
+        return collisionOtherIndex;
+    }
+
+    public void checkPlayer(Entity entity) {
+        // translate hitbox to world coordinates
+        entity.hitbox.x = entity.worldX + entity.hitbox.x;
+        entity.hitbox.y = entity.worldY + entity.hitbox.y;
+
+        Player player = gamePanel.player;
+        if (player != null) {
+            // get player hitbox position
+            player.hitbox.x = player.worldX + player.hitbox.x;
+            player.hitbox.y = player.worldY + player.hitbox.y;
+            boolean collisionDetected = entity.hitbox.intersects(player.hitbox);
+
+            if (collisionDetected) {
+                switch (entity.direction) {
+                    case "up":
+                        entity.worldY = player.hitbox.y + player.hitbox.height - entity.hitboxDefaultY;
+                        break;
+                    case "down":
+                        entity.worldY = player.worldY - entity.hitboxDefaultY - entity.hitbox.height;
+                        break;
+                    case "left":
+                        entity.worldX = player.hitbox.x + player.hitbox.width - entity.hitboxDefaultX;
+                        break;
+                    case "right":
+                        entity.worldX = player.hitbox.x - entity.hitboxDefaultX - entity.hitbox.width;
+                        break;
+                }
+            }
+
+            // reset hitbox backt to relative to object
+            player.hitbox.x = player.hitboxDefaultX;
+            player.hitbox.y = player.hitboxDefaultY;
+        }
+
+        // reset hitbox back to relative to player
+        entity.hitbox.x = entity.hitboxDefaultX;
+        entity.hitbox.y = entity.hitboxDefaultY;
     }
 }

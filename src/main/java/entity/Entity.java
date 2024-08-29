@@ -21,10 +21,10 @@ public abstract class Entity {
     public int spriteCounter = 0;
     public int spriteNumber = 1;
 
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-
-    public Rectangle hitbox;
+    public Rectangle hitbox = new Rectangle(0, 0, 48, 48);
     public int hitboxDefaultX, hitboxDefaultY;
+    
+    protected int turnCounter = 0;
 
     public Entity(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -40,6 +40,32 @@ public abstract class Entity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void setDirection() {};
+
+    public void update() {
+        turnCounter++;
+        if (turnCounter > 100) {
+            setDirection();
+            turnCounter = 0;
+        }
+        switch(direction) {
+            case "up": worldY -= speed; break;
+            case "down": worldY += speed; break;
+            case "left": worldX -= speed; break;
+            case "right": worldX += speed; break;
+        }
+
+        gamePanel.collisionChecker.resolveTileCollisions(this);
+        gamePanel.collisionChecker.checkPlayer(this);
+
+        spriteCounter++;
+        if (spriteCounter > 10) {
+            spriteNumber = spriteNumber == 1 ? 2 : 1;
+            spriteCounter = 0;
+        }
+
     }
 
     public void draw(Graphics2D g2d) {
