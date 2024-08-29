@@ -11,4 +11,11 @@ public class Utils {
         g2d.dispose();
         return scaledImage;
     }
+
+    public static boolean isOnScreen(int screenX, int screenY, GamePanel gamePanel) {
+        return screenX >= -gamePanel.tileSize &&
+                screenX < gamePanel.screenWidth &&
+                screenY >= -gamePanel.tileSize &&
+                screenY < gamePanel.screenHeight;
+    }
 }

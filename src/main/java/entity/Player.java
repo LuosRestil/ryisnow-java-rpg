@@ -3,17 +3,11 @@ package main.java.entity;
 // import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import main.java.GamePanel;
 import main.java.KeyHandler;
-import main.java.Utils;
 
 public class Player extends Entity {
-    GamePanel gamePanel;
     KeyHandler keyHandler;
 
     public final int screenX;
@@ -22,6 +16,8 @@ public class Player extends Entity {
     public int keys = 0;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
+        super(gamePanel);
+
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
 
@@ -34,7 +30,7 @@ public class Player extends Entity {
         this.hitboxDefaultY = this.hitbox.y;
 
         setDefaultValues();
-        setPlayerImages();
+        setImages();
     }
 
     private void setDefaultValues() {
@@ -44,27 +40,15 @@ public class Player extends Entity {
         direction = "down";
     }
 
-    public void setPlayerImages() {
-        up1 = setup("boy_up_1");
-        up2 = setup("boy_up_2");
-        down1 = setup("boy_down_1");
-        down2 = setup("boy_down_2");
-        left1 = setup("boy_left_1");
-        left2 = setup("boy_left_2");
-        right1 = setup("boy_right_1");
-        right2 = setup("boy_right_2");
-    }
-
-    private BufferedImage setup(String name) {
-        try {
-            BufferedImage img = ImageIO
-                    .read(getClass().getResourceAsStream(String.format("../../resources/player/%s.png", name)));
-            img = Utils.scaleImage(img, gamePanel.tileSize, gamePanel.tileSize);
-            return img;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private void setImages() {
+        up1 = getImage("/player/boy_up_1");
+        up2 = getImage("/player/boy_up_2");
+        down1 = getImage("/player/boy_down_1");
+        down2 = getImage("/player/boy_down_2");
+        left1 = getImage("/player/boy_left_1");
+        left2 = getImage("/player/boy_left_2");
+        right1 = getImage("/player/boy_right_1");
+        right2 = getImage("/player/boy_right_2");
     }
 
     public void update() {
@@ -103,22 +87,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2d) {
-        BufferedImage image = null;
-        switch (direction) {
-            case "up":
-                image = spriteNumber == 1 ? up1 : up2;
-                break;
-            case "down":
-                image = spriteNumber == 1 ? down1 : down2;
-                break;
-            case "left":
-                image = spriteNumber == 1 ? left1 : left2;
-                break;
-            case "right":
-                image = spriteNumber == 1 ? right1 : right2;
-                break;
-        }
-        g2d.drawImage(image, screenX, screenY, null);
+        g2d.drawImage(getCurrentImage(), screenX, screenY, null);
 
         // hitbox
         // g2d.setColor(new Color(1f, 0f, 0f, .5f));

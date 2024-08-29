@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import main.java.entity.Entity;
 import main.java.entity.Player;
 import main.java.enums.GameState;
 import main.java.object.SuperObject;
@@ -46,11 +47,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler(this);
     Thread gameThread;
+
     public Player player = new Player(this, keyHandler);
     public SuperObject[] objects = new SuperObject[10];
+    public Entity[] npcs = new Entity[10];
+
     TileManager tileManager = new TileManager(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+
     public SoundManager musicManager = new SoundManager();
     public SoundManager soundEffectManager = new SoundManager();
 
@@ -75,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setup() {
         assetSetter.populateObjects();
+        assetSetter.populateNpcs();
         playMusic(0);
         gameState = GameState.PLAY;
     }
@@ -119,17 +125,22 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
 
         tileManager.draw(g2d);
-        for (var obj : objects) {
+
+        for (var obj : objects) 
             if (obj != null) obj.draw(g2d, this);
-        }
+
+        for (var npc : npcs)
+            if (npc != null) npc.draw(g2d);
+
         player.draw(g2d);
 
         ui.draw(g2d);
-        
+
         // fps
         // g2d.setColor(Color.WHITE);
+        // g2d.setFont(g2d.getFont().deriveFont(Font.PLAIN, 20));
         // g2d.drawString("fps: " + fps, 10, 20);
-        // g2d.dispose();
+        g2d.dispose();
     }
 
     public void end() {

@@ -1,10 +1,12 @@
 package main.java;
 
+import main.java.entity.NpcOldMan;
 import main.java.object.Boots;
 import main.java.object.Chest;
 import main.java.object.Door;
 import main.java.object.Key;
 import main.java.object.SuperObject;
+import main.java.entity.Entity;
 
 public class AssetSetter {
     private final GamePanel gamePanel;
@@ -52,5 +54,12 @@ public class AssetSetter {
         boots1.worldX = 37 * gamePanel.tileSize;
         boots1.worldY = 42 * gamePanel.tileSize;
         gamePanel.objects[7] = boots1;
+    }
+
+    public void populateNpcs() {
+        Entity oldMan1 = new NpcOldMan(gamePanel);
+        oldMan1.worldX = gamePanel.tileSize * 21;
+        oldMan1.worldY = gamePanel.tileSize * 21;
+        gamePanel.npcs[0] = oldMan1;
     }
 }

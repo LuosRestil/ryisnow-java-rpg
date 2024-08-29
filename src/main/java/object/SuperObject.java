@@ -23,10 +23,7 @@ public abstract class SuperObject {
     public void draw(Graphics2D g2d, GamePanel gamePanel) {
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
-        if (screenX >= -gamePanel.tileSize &&
-                screenX < gamePanel.screenWidth &&
-                screenY >= -gamePanel.tileSize &&
-                screenY < gamePanel.screenHeight) {
+        if (Utils.isOnScreen(screenX, screenY, gamePanel)) {
             g2d.drawImage(
                     image,
                     screenX,
