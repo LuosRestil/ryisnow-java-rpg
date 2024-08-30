@@ -28,8 +28,8 @@ public class NpcOldMan extends Entity {
     }
 
     @Override
-    public void setDirection(String direction) {
-        if (direction == null) {
+    public void setDirection(String newDir) {
+        if (newDir == null) {
             int randNum = new Random().nextInt(100);
 
             if (randNum < 25) {
@@ -42,7 +42,7 @@ public class NpcOldMan extends Entity {
                 direction = "right";
             }
         } else {
-            this.direction = direction;
+            direction = newDir;
         }
 
     }
