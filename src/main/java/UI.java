@@ -1,9 +1,11 @@
 package main.java;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
 import main.java.enums.GameState;
@@ -22,6 +24,11 @@ public class UI {
     private int messageTime = 80;
 
     public boolean gameFinished = false;
+
+    // subwindow
+    private Color subWindowFillColor = new Color(0, 0, 0);
+    private Color subWindowStrokeColor = new Color(255, 255, 255);
+    private Stroke subWindowStroke = new BasicStroke(5);
 
     public UI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -66,6 +73,8 @@ public class UI {
             }
         } else if (gamePanel.gameState == GameState.PAUSE) {
             showPausedText();
+        } else if (gamePanel.gameState == GameState.DIALOGUE) {
+            showDialogue();
         }
 
     }
@@ -97,6 +106,23 @@ public class UI {
         int x = getXForCenteredText(text);
         int y = gamePanel.screenHeight / 2;
         g2d.drawString(text, x, y);
+    }
+
+    private void showDialogue() {
+        // window
+        int x = gamePanel.tileSize * 2;
+        int y = gamePanel.tileSize / 2;
+        int width = gamePanel.screenWidth - gamePanel.tileSize * 4;
+        int height = gamePanel.tileSize * 4;
+        drawSubWindow(x, y, width, height);
+    }
+
+    private void drawSubWindow(int x, int y, int width, int height) {
+        g2d.setColor(subWindowFillColor);
+        g2d.fillRoundRect(x, y, width, height, 35, 35);
+        g2d.setColor(subWindowStrokeColor);
+        g2d.setStroke(subWindowStroke);
+        g2d.drawRoundRect(x, y, width, height, 35, 35);
     }
 
     private int getTextWidth(String text) {

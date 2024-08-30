@@ -39,6 +39,13 @@ public class KeyHandler implements KeyListener {
                 else if (gamePanel.gameState == GameState.PAUSE)
                     gamePanel.gameState = GameState.PLAY;
                 break;
+
+            case KeyEvent.VK_O:
+                if (gamePanel.gameState == GameState.PLAY) 
+                    gamePanel.gameState = GameState.DIALOGUE;
+                else if (gamePanel.gameState == GameState.DIALOGUE)
+                    gamePanel.gameState = GameState.PLAY;
+                break;
             default:
                 break;
         }
