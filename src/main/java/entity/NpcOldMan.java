@@ -8,13 +8,14 @@ public class NpcOldMan extends Entity {
 
     public NpcOldMan(GamePanel gamePanel) {
         super(gamePanel);
-    
+
         direction = "down";
         speed = 1;
 
         setImages();
+        setDialogues();
     }
-    
+
     private void setImages() {
         up1 = getImage("/npcs/oldman_up_1");
         up2 = getImage("/npcs/oldman_up_2");
@@ -27,17 +28,29 @@ public class NpcOldMan extends Entity {
     }
 
     @Override
-    public void setDirection() {
-        int randNum = new Random().nextInt(100);
+    public void setDirection(String direction) {
+        if (direction == null) {
+            int randNum = new Random().nextInt(100);
 
-        if (randNum < 25) {
-            direction = "up";
-        } else if (randNum < 50) {
-            direction = "down";
-        } else if (randNum < 75) {
-            direction = "left";
+            if (randNum < 25) {
+                direction = "up";
+            } else if (randNum < 50) {
+                direction = "down";
+            } else if (randNum < 75) {
+                direction = "left";
+            } else {
+                direction = "right";
+            }
         } else {
-            direction = "right";
+            this.direction = direction;
         }
+
+    }
+
+    private void setDialogues() {
+        dialogues[0] = "Hello, lad.";
+        dialogues[1] = "So, you came to this island seeking the treasure?";
+        dialogues[2] = "I used to be a great wizard, but now...\nI'm a bit too old for taking an adventure.";
+        dialogues[3] = "Well, good luck to you.";
     }
 }

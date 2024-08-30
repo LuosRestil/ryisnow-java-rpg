@@ -1,7 +1,4 @@
 bin
 .vscode
-src/main/resources/objects
-src/main/resources/player
-src/main/resources/sound
-src/main/resources/tiles
-src/main/resources/npcs
+src/main/resources/*
+!src/main/resources/maps

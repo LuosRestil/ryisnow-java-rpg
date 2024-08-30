@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     // game state
     public GameState gameState;
 
-    KeyHandler keyHandler = new KeyHandler(this);
+    public KeyHandler keyHandler = new KeyHandler(this);
     Thread gameThread;
 
     public Player player = new Player(this, keyHandler);

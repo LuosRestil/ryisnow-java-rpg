@@ -25,10 +25,11 @@ public class UI {
 
     public boolean gameFinished = false;
 
-    // subwindow
-    private Color subWindowFillColor = new Color(0, 0, 0);
+    // dialogue
+    private Color subWindowFillColor = new Color(0, 0, 0, 210);
     private Color subWindowStrokeColor = new Color(255, 255, 255);
     private Stroke subWindowStroke = new BasicStroke(5);
+public String currentDialogue = "";
 
     public UI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -115,6 +116,14 @@ public class UI {
         int width = gamePanel.screenWidth - gamePanel.tileSize * 4;
         int height = gamePanel.tileSize * 4;
         drawSubWindow(x, y, width, height);
+
+        g2d.setFont(g2d.getFont().deriveFont(Font.PLAIN, 20));
+        x += gamePanel.tileSize;
+        y += gamePanel.tileSize;
+        for (String line : currentDialogue.split("\n")) {
+            g2d.drawString(line, x, y);
+            y += 24;
+        }
     }
 
     private void drawSubWindow(int x, int y, int width, int height) {
@@ -122,7 +131,7 @@ public class UI {
         g2d.fillRoundRect(x, y, width, height, 35, 35);
         g2d.setColor(subWindowStrokeColor);
         g2d.setStroke(subWindowStroke);
-        g2d.drawRoundRect(x, y, width, height, 35, 35);
+        g2d.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
 
     private int getTextWidth(String text) {

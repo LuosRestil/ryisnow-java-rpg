@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import main.java.GamePanel;
 import main.java.KeyHandler;
+import main.java.enums.GameState;
 
 public class Player extends Entity {
     KeyHandler keyHandler;
@@ -68,11 +69,19 @@ public class Player extends Entity {
         }
 
         if (keyPressed) {
-            switch(direction) {
-                case "up": worldY -= speed; break;
-                case "down": worldY += speed; break;
-                case "left": worldX -= speed; break;
-                case "right": worldX += speed; break;
+            switch (direction) {
+                case "up":
+                    worldY -= speed;
+                    break;
+                case "down":
+                    worldY += speed;
+                    break;
+                case "left":
+                    worldX -= speed;
+                    break;
+                case "right":
+                    worldX += speed;
+                    break;
             }
         }
 
@@ -80,8 +89,10 @@ public class Player extends Entity {
         int collidedObjectIndex = gamePanel.collisionChecker.checkObjects(this, true);
         if (collidedObjectIndex > -1)
             interactObject(collidedObjectIndex);
-        gamePanel.collisionChecker.checkEntities(this, gamePanel.npcs);
-        
+        int collidedNpcIndex = gamePanel.collisionChecker.checkEntities(this, gamePanel.npcs);
+        if (collidedNpcIndex > -1)
+            interactNpc(collidedNpcIndex);
+
         if (keyPressed) {
             spriteCounter++;
             if (spriteCounter > 10 && keyPressed) {
@@ -128,6 +139,13 @@ public class Player extends Entity {
             case "Chest":
                 win();
                 break;
+        }
+    }
+
+    private void interactNpc(int idx) {
+        if (gamePanel.keyHandler.enterPressed) {
+            gamePanel.npcs[idx].speak();
+            gamePanel.gameState = GameState.DIALOGUE;
         }
     }
 

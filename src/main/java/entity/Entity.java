@@ -23,8 +23,11 @@ public abstract class Entity {
 
     public Rectangle hitbox = new Rectangle(0, 0, 48, 48);
     public int hitboxDefaultX, hitboxDefaultY;
-    
+
     protected int turnCounter = 0;
+
+    protected String[] dialogues = new String[20];
+    protected int currentDialogue = 0;
 
     public Entity(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -42,19 +45,28 @@ public abstract class Entity {
         }
     }
 
-    public void setDirection() {};
+    public void setDirection(String direction) {
+    };
 
     public void update() {
         turnCounter++;
         if (turnCounter > 100) {
-            setDirection();
+            setDirection(null);
             turnCounter = 0;
         }
-        switch(direction) {
-            case "up": worldY -= speed; break;
-            case "down": worldY += speed; break;
-            case "left": worldX -= speed; break;
-            case "right": worldX += speed; break;
+        switch (direction) {
+            case "up":
+                worldY -= speed;
+                break;
+            case "down":
+                worldY += speed;
+                break;
+            case "left":
+                worldX -= speed;
+                break;
+            case "right":
+                worldX += speed;
+                break;
         }
 
         gamePanel.collisionChecker.resolveTileCollisions(this);
@@ -101,5 +113,34 @@ public abstract class Entity {
                 break;
         }
         return image;
+    }
+
+    public void speak() {
+        gamePanel.ui.currentDialogue = dialogues[currentDialogue];
+        currentDialogue++;
+        if (currentDialogue > dialogues.length || dialogues[currentDialogue] == null) {
+            currentDialogue = 0;
+        }
+
+        switch (gamePanel.player.direction) {
+            case ("up"):
+                direction = "down";
+                break;
+            case ("down"):
+                direction = "up";
+                break;
+            case ("left"):
+                direction = "right";
+                break;
+            case ("right"):
+                direction = "left";
+                break;
+            default:
+                break;
+        }
+    };
+
+    protected void facePlayer() {
+        // if top of player hitbox is
     }
 }
